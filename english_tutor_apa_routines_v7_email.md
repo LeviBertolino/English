@@ -12,16 +12,17 @@ This routine runs **headless** in Claude Code on a daily schedule. There is no l
 
 The student does not send responses back. The Production Challenge and Self-check are **self-directed** — the student does them privately; you don't see the results. Don't promise feedback you can't deliver.
 
-### Four output channels — all required
+### Five output channels — all required
 
-This routine produces output in four places, and **all four** matter:
+This routine produces output in five places, and **all five** matter:
 
 1. **Slack `#english` channel** (primary, what the student reads): the complete lesson posted as Slack messages, formatted in Slack's `mrkdwn`. This is the daily reading surface.
 2. **GitHub repo `LeviBertolino/English`** (archive + continuity): the same lesson committed as a markdown file under `lessons/` or `reviews/`. Tomorrow's run reads this to ground the warm-up in real examples.
-3. **E-mail to `levi.bertol@gmail.com`** (backup + mobile-friendly): the full lesson sent by e-mail so the student can read it even without Slack access.
-4. **Routine response message** (confirmation): a brief one- or two-line confirmation of what was posted, committed, and e-mailed. Not the lesson itself.
+3. **E-mail to `suporte.studytech@live.com` and `levi.bertolino@livelo.com.br`** (backup + mobile-friendly): the full lesson sent to both addresses so the student can read it even without Slack access.
+4. **Push notification to the Claude mobile app** (attention signal): a one-line push via `PushNotification` so the student's phone alerts them the lesson is ready.
+5. **Routine response message** (confirmation): a brief one- or two-line confirmation of what was posted, committed, e-mailed, and notified. Not the lesson itself.
 
-Never skip Slack. Never skip the commit. Never skip the e-mail. Never put the full lesson in the routine response message — Slack is where the student reads.
+Never skip Slack. Never skip the commit. Never skip the e-mail. Never skip the push notification. Never put the full lesson in the routine response message — Slack is where the student reads.
 
 ### Repo structure
 
@@ -145,7 +146,12 @@ Adjust based on size. The principle is: keep the channel surface clean (parent o
 
 ## Step 6 — Send the lesson by e-mail
 
-Use the Gmail MCP tool to send the full lesson to **`levi.bertol@gmail.com`**.
+Use the Gmail MCP tool to send the full lesson to **both** recipients:
+
+1. `suporte.studytech@live.com`
+2. `levi.bertolino@livelo.com.br`
+
+Send two separate e-mails (one per address) or a single e-mail with both in the `To` field, whichever the MCP supports.
 
 ### Subject line
 
@@ -177,11 +183,27 @@ Do **not** abort the whole routine. Slack and the commit must still complete.
 
 ---
 
-## Step 7 — Final response (brief)
+## Step 7 — Push notification
+
+After the e-mail is sent (or skipped), call the `PushNotification` tool with a one-line message so the Claude mobile app alerts the student.
+
+Message format (under 200 chars, no markdown):
+
+- Normal lesson: `📚 Unit NNN — <title> is ready in #english`  
+  Example: `📚 Unit 017 — Have you ever...? is ready in #english`
+- Review Week: `🔁 Review Week NNN — Units X–Y is ready in #english`
+
+### If the push is not delivered
+
+The tool returns a result indicating whether the push was sent. If it was not sent (Remote Control not connected), no action needed — it is expected. Continue to the final response step.
+
+---
+
+## Step 8 — Final response (brief)
 
 Your final routine response should be a short confirmation only. Two or three lines:
 
-> ✅ Unit 017 — Have you ever...? posted to `#english`, committed to `lessons/2026-05-04-unit-017.md`, and e-mailed to levi.bertol@gmail.com.
+> ✅ Unit 017 — Have you ever...? posted to `#english`, committed to `lessons/2026-05-04-unit-017.md`, e-mailed to suporte.studytech@live.com and levi.bertolino@livelo.com.br, push sent.
 
 Do not paste the lesson here. Slack is the reading surface; the response is just a receipt.
 
