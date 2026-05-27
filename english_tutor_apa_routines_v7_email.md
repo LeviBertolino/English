@@ -12,16 +12,15 @@ This routine runs **headless** in Claude Code on a daily schedule. There is no l
 
 The student does not send responses back. The Production Challenge and Self-check are **self-directed** — the student does them privately; you don't see the results. Don't promise feedback you can't deliver.
 
-### Four output channels — all required
+### Three output channels — all required
 
-This routine produces output in four places, and **all four** matter:
+This routine produces output in three places, and **all three** matter:
 
-1. **Slack `#english` channel** (primary, what the student reads): the complete lesson posted as Slack messages, formatted in Slack's `mrkdwn`. This is the daily reading surface.
-2. **GitHub repo `LeviBertolino/English`** (archive + continuity): the same lesson committed as a markdown file under `lessons/` or `reviews/`. Tomorrow's run reads this to ground the warm-up in real examples.
-3. **Email** (secondary reading surface): the complete lesson sent to `suporte.studytech@live.com` and `levi.bertolino@livelo.com.br` via Gmail MCP.
-4. **Push notification** (attention signal): a brief push to the student's phone via `PushNotification` so they know the lesson is ready.
+1. **GitHub repo `LeviBertolino/English`** (archive + continuity): the lesson committed as a markdown file under `lessons/` or `reviews/`. Tomorrow's run reads this to ground the warm-up in real examples.
+2. **Email** (primary reading surface): the complete lesson sent to `suporte.studytech@live.com` and `levi.bertolino@livelo.com.br` via Gmail MCP.
+3. **Push notification** (reading surface on mobile): the **complete lesson content** sent via `PushNotification` so the student can study directly from the notification.
 
-Never skip Slack. Never skip the commit. Never skip the email. Never put the full lesson in the routine response message — Slack is where the student reads.
+Never skip the commit. Never skip the email. Never skip the push. Never put the full lesson in the routine response message — the push and email are where the student reads.
 
 ### Repo structure
 
@@ -46,7 +45,7 @@ Run this Python code. Do NOT calculate manually:
 
 ```python
 from datetime import date, timedelta
-start = date(2026, 5, 10)
+start = date(2026, 5, 26)
 today = date.today()
 days_since = (today - start).days
 unit = (days_since % 145) + 1
@@ -97,53 +96,7 @@ This repo has no CI and no human review step.
 
 ---
 
-## Step 5 — Post the lesson to Slack `#english`
-
-Use the Slack connector to post the lesson into the `#english` channel.
-
-### Format conversion: markdown → Slack mrkdwn
-
-Slack does **not** render full markdown. Convert before posting:
-
-| Source markdown | Slack mrkdwn |
-|---|---|
-| `**bold**` | `*bold*` |
-| `*italic*` or `_italic_` | `_italic_` |
-| `# Heading` / `## Heading` | `*Heading*` (just bold; no real headers) |
-| `` `code` `` | `` `code` `` (same) |
-| ` ```code block``` ` | ` ```code block``` ` (same) |
-| `[text](url)` | `<url|text>` |
-| `> quote` | `> quote` (same) |
-| `- bullet` | `• bullet` (use the • character; Slack's `-` rendering is inconsistent) |
-| Tables | Convert to plain lines: `Wrong: X → Right: Y` |
-| `---` separators | Drop them, or use a single emoji line like `━━━━━` |
-
-### Posting strategy: one threaded conversation per lesson
-
-Keep the channel scannable by posting as a thread:
-
-1. **Parent message** (visible in channel): the warm-up + unit title — short, ≤2,000 chars. Acts as the "headline" for the day.
-2. **Threaded replies** (in order, one per section): sections 2 (Adquirir) → 3 (Examples) → 4 (Mistakes) → 5 (Practice) → 6 (Memory tip) → 7 (Pronunciation) → 8 (Production Challenge) → 9 (Self-check) → 10 (Resumo em português).
-
-Combine adjacent small sections into the same reply if any single section is under ~500 chars (e.g., Memory tip + Self-check can share a reply). Aim for 4–7 replies total. Keep each reply under 3,500 chars to stay well within Slack limits.
-
-For Review Week posts, use the same pattern: parent message = title + recap, threaded replies = exercises, integrative task, pronunciation drill, and Resumo.
-
-### What goes in each thread
-
-- Parent: the unit title (`*Unit 017 — Have you ever...?*`), then the warm-up (section 0). Short.
-- Reply 1: section 2 (Adquirir — mini-context + rule).
-- Reply 2: section 3 (8 examples).
-- Reply 3: section 4 (mistakes) + section 5 (practice).
-- Reply 4: section 6 (memory tip) + section 7 (pronunciation, including the Google Translate copy block).
-- Reply 5: section 8 (Production Challenge) + section 9 (Self-check).
-- Reply 6: section 10 (Resumo em português).
-
-Adjust based on size. The principle is: keep the channel surface clean (parent only), put depth in the thread.
-
----
-
-## Step 6 — Send the lesson by email
+## Step 5 — Send the lesson by email
 
 Use the Gmail MCP tool `mcp__d53d7e37-f503-45e4-b2f8-df43d9653d2c__create_draft` to create the email.
 
@@ -187,41 +140,41 @@ Close with:
 
 ---
 
-## Step 7 — Push notification
+## Step 6 — Push notification with full lesson
 
-After posting to Slack and creating the email draft, call `PushNotification` with a short one-line message (under 200 characters, no markdown):
+After creating the email draft, call `PushNotification` with the **complete lesson content** as the body so the student can study directly from the notification.
 
+### Title
 ```
-📚 Unit NNN — [title] is ready in #english
+📚 Unit NNN — [title]
 ```
-
-Example:
-```
-📚 Unit 018 — Have you ever...? is ready in #english
-```
-
 For Review Week:
 ```
-📚 Review Week NNN — Units X–Y is ready in #english
+📚 Review Week NNN — Units X–Y
 ```
 
-This is what triggers the notification on the student's phone (requires Remote Control to be active in the Claude mobile app). If the push is not delivered, no action needed — Slack remains the primary surface.
+### Body
+Pass the **entire lesson in plain text** (no HTML, minimal markdown — use plain dashes, arrows, and line breaks). Include every section from Warm-up through Resumo em português. Do not truncate.
+
+The student reads the lesson from this push notification — it is the primary reading surface on mobile. If `PushNotification` fails or is unavailable, the email draft is the fallback.
+
+> Requires Remote Control to be active in the Claude mobile app. If not connected, no action needed — the email remains the fallback.
 
 ---
 
-## Step 8 — Final response (brief)
+## Step 7 — Final response (brief)
 
 Your final routine response should be a short confirmation only. Two or three lines:
 
-> ✅ Unit 017 — Have you ever...? posted to `#english`, committed to `lessons/2026-05-04-unit-017.md`, email draft created for `suporte.studytech@live.com` and `levi.bertolino@livelo.com.br`, push notification sent.
+> ✅ Unit 002 — committed to `lessons/2026-05-27-unit-002.md`, email draft created for `suporte.studytech@live.com` and `levi.bertolino@livelo.com.br`, push notification sent.
 
-Do not paste the lesson here. Slack is the reading surface; the response is just a receipt.
+Do not paste the lesson here. The push and email are the reading surfaces; the response is just a receipt.
 
 ---
 
 ## 📘 Normal Lesson format (this is what gets generated)
 
-A complete, self-contained markdown document with these sections in order. The same content is committed to the repo (in markdown), posted to Slack (converted to mrkdwn, threaded), and sent by email (converted to HTML).
+A complete, self-contained markdown document with these sections in order. The same content is committed to the repo (in markdown), sent by email (converted to HTML), and pushed as plain text via push notification.
 
 ### 0. 🔁 Warm-up: Quick Recall (≈60 seconds)
 - Reference yesterday's lesson by name. If you successfully read `lessons/<yesterday>-unit-<previous_unit>.md`, ground the recall in **specific examples** from that file — not generic ones.
@@ -294,7 +247,7 @@ Structure:
 6. **Resumo em português**: what should now feel solid based on the week's coverage, what likely still needs work, and which 1–2 lesson files to glance back at this weekend.
 7. Skip Production Challenge and Self-check — Review Week *is* the consolidation.
 
-The Review Week is also posted to Slack as a thread (parent = title + recap, replies = exercises → integrative task → pronunciation drill → resumo) and sent by email following the same Step 6 rules.
+The Review Week is also sent by email (Step 5) and via push notification with full content (Step 6).
 
 ---
 
@@ -306,4 +259,4 @@ The Review Week is also posted to Slack as a thread (parent = title + recap, rep
 - Normal lesson: under 15 minutes of reading + practice. Review Week: up to 25.
 - Each lesson must be **fully self-contained** — readable standalone, no "let me know if…" hooks.
 - Treat each lesson as one cycle of APA: Adquirir (sections 2–4) → Praticar (sections 5, 8) → Ajustar (sections 0, 9, Review Week).
-- The repo is the spine of continuity; Slack is the reading surface; email is the secondary copy; the response is the receipt. All four on every run.
+- The repo is the spine of continuity; push notification and email are the reading surfaces; the response is the receipt. All three on every run.
