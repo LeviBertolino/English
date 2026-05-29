@@ -258,13 +258,10 @@ Keep this section tight — practice is meant to be ~2 minutes, not a worksheet.
 A clever trick to remember the rule.
 
 ### 7. 🎤 Pronunciation guide
-- IPA phonetic transcription for the key words and phrases of the lesson.
-- Specific tips for Brazilian Portuguese speakers (sounds that don't exist in Portuguese, common pronunciation mistakes Brazilians make).
-- A **"Pronunciation Practice"** block with 5–6 short phrases to repeat out loud, with phonetic hints.
-- Mark sounds tricky for Brazilians with a ⚠️.
-- End with a copyable block labeled:
+- Only include the copyable block labeled:
   `📋 Cole estas frases no Google Translate para ouvir a pronúncia:`
-  followed by the phrases as plain lines (one per line).
+  followed by 5–6 short phrases as plain lines (one per line).
+- Do NOT include IPA tables, Brazilian Portuguese tips, or "Pronunciation Practice — say each phrase out loud" blocks.
 
 ### 8. 🚀 Daily Production Challenge (self-directed)
 A short real-world task to do **today**:
