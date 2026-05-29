@@ -30,8 +30,7 @@ Plus: 3 common mistakes (❌ → ✅), memory tip, IPA pronunciation guide with 
 ```
 .
 ├── README.md
-├── english_tutor_apa_routines_v4_repo.md   # the routine prompt
-├── Essential Grammar in Use 4th Edition by R. Murphy-2.pdf
+├── english_tutor_apa_routines_v7_email.md  # the routine prompt (current)
 ├── lessons/
 │   └── YYYY-MM-DD-unit-NNN.md              # one file per daily lesson
 └── reviews/
@@ -42,12 +41,14 @@ The `lessons/` and `reviews/` folders are created by the routine on first run.
 
 ## Setup
 
-1. Open [claude.ai/code/routines](https://claude.ai/code/routines) → **New routine**.
-2. **Prompt**: paste the contents of [`english_tutor_apa_routines_v4_repo.md`](english_tutor_apa_routines_v4_repo.md).
+1. Open [claude.ai/code/routines](https://claude.ai/code/routines) → **New routine** (or edit the existing one).
+2. **Prompt**: paste the contents of [`english_tutor_apa_routines_v7_email.md`](english_tutor_apa_routines_v7_email.md).
 3. **Repository**: select `LeviBertolino/English`.
 4. **Trigger**: Scheduled, daily, at the time of your choice (e.g. 7:00).
-5. **Connectors**: none required.
+5. **Connectors**: add **Slack** and **Gmail** — both are required for v7.
 6. Save.
+
+> Auto-send Gmail drafts: copy [`gmail-auto-send.gs`](gmail-auto-send.gs) into [script.google.com](https://script.google.com), run once to grant permissions, then add a time-driven trigger (every hour).
 
 The routine is headless — there's no live back-and-forth. Lessons are generated, committed, and waiting for you to read on GitHub or in the Claude Code session.
 
