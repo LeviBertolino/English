@@ -97,7 +97,11 @@ This repo has no CI and no human review step.
 
 ## Step 5 — Create the lesson page in Notion
 
-Use the Notion MCP connector to create a new page with the full lesson content.
+Use `mcp__4d38618d-b320-4440-b6af-5e80f2c9998b__notion-create-pages` to create a new page with the full lesson content.
+
+### Finding the parent page
+
+Before creating, use `mcp__4d38618d-b320-4440-b6af-5e80f2c9998b__notion-search` to find the parent page titled **"English Lessons"** (or similar). Use its `id` as the `parent_id`. If not found, create the page at the workspace root.
 
 ### Page title
 ```
@@ -110,20 +114,18 @@ For Review Week:
 
 ### Page content
 
-Create the page with the full lesson in Notion blocks, preserving the structure:
+Pass the full lesson as Notion blocks in the `children` parameter:
 
-- Each section heading (Warm-up, Unit title, Adquirir, etc.) → **heading_2** block
-- Regular paragraphs → **paragraph** block
-- Bullet items → **bulleted_list_item** block
-- `❌ Wrong → ✅ Right` lines → **callout** block (red for ❌, green for ✅), or paragraph if callout is unavailable
-- Code snippets → **code** block
-- Section separators → **divider** block
+| Content | Notion block type |
+|---|---|
+| Section headings (Warm-up, Adquirir, etc.) | `heading_2` |
+| Regular paragraphs | `paragraph` |
+| Bullet list items | `bulleted_list_item` |
+| `❌ Wrong → ✅ Right` lines | `callout` (or `paragraph` as fallback) |
+| Code / Python snippets | `code` |
+| Section separators | `divider` |
 
-### Where to create the page
-
-Create the page inside the Notion database or parent page configured for English lessons. If no parent is specified in the Notion connector configuration, create it at the top level of the connected workspace.
-
-> **Tool to use:** use whatever `create_page` (or equivalent) tool the Notion MCP exposes. Check the available Notion tools at runtime and use the one that creates a full page with block content.
+Include **all sections** from Warm-up (section 0) through Resumo em português (section 10). Do not truncate.
 
 ---
 
