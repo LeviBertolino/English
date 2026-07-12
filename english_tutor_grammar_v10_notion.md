@@ -38,6 +38,7 @@ in the routine response — Notion is where the student reads.
 ```
 lessons/YYYY-MM-DD-unit-NNN.md
 reviews/YYYY-MM-DD-week-NNN.md
+audio/YYYY-MM-DD-unit-NNN/phrase-NN.mp3   # shadowing audio for each lesson
 archive/cycle-v9/          # previous cycle (June–July 2026) — do NOT read
 ```
 
@@ -80,8 +81,38 @@ Always before writing:
 If a file doesn't exist (first runs, missed days), continue without it and
 note the gap briefly in the lesson if relevant.
 
-## Step 3 — Generate the lesson and commit
+## Step 3 — Generate the lesson
 
+Write the lesson file using the format below. Don't commit yet — audio comes
+first so lesson and audio land in one commit.
+
+## Step 3.5 — Generate shadowing audio (gTTS)
+
+Generate mp3s for the **5 shadowing sentences** chosen in lesson section 7
+(🔊 Shadowing). Use gTTS — it is the only TTS that works through this
+environment's network policy (`translate.google.com` is allowlisted;
+edge-tts/Microsoft does NOT work — the proxy blocks its WebSocket):
+
+```python
+# pip install gTTS  (if missing)
+from gtts import gTTS
+import os
+d = "audio/YYYY-MM-DD-unit-NNN"   # same date/unit as the lesson file
+os.makedirs(d, exist_ok=True)
+sentences = ["...", "...", "...", "...", "..."]  # the 5 shadowing sentences
+for i, s in enumerate(sentences, 1):
+    gTTS(s, lang="en").save(f"{d}/phrase-{i:02d}.mp3")
+gTTS(sentences[0], lang="en", slow=True).save(f"{d}/phrase-01-slow.mp3")
+# Verify: every file MUST be > 1000 bytes. If any is 0/tiny, generation
+# failed — delete the whole audio dir for today, skip audio, and continue.
+for f in os.listdir(d):
+    assert os.path.getsize(os.path.join(d, f)) > 1000, f
+```
+
+Never commit empty/failed mp3 files. If audio fails, the lesson still ships —
+mention the audio failure in the final receipt (Step 6), not in the lesson.
+
+Then commit lesson + audio together.
 Commit message — Normal: `Add Unit NNN — <title>` | Review:
 `Add Review Week NNN — Units X–Y`
 
@@ -131,7 +162,7 @@ just a receipt.
 - 2 spaced-review questions: one from the ~1-week-old file, one from the
   ~1-month-old file (name the unit each question comes from). Skip whichever
   doesn't exist yet in a young cycle.
-- **Do NOT put answers in this section.** All answers go in section 8
+- **Do NOT put answers in this section.** All answers go in section 9
   (Gabarito), so the student retrieves from memory first.
 
 ### 1. 📘 `# Unit NNN — [Title]`
@@ -166,17 +197,27 @@ Spot-the-error or choose-between items. At least one item must force a choice
 **between today's structure and its rival** (not just form manipulation).
 Answers go in the Gabarito, not here.
 
-### 7. 🗣️ Para levar para a aula
+### 7. 🔊 Shadowing (ouça e repita)
+Pick the **5 best sentences of the lesson** for speaking practice (favor the
+mini-context lines and the most work-relevant examples). List them numbered,
+each followed by a link to its mp3 in the repo:
+`https://github.com/LeviBertolino/English/blob/main/audio/YYYY-MM-DD-unit-NNN/phrase-NN.mp3`
+(GitHub renders an audio player). Include the slow version of phrase 1.
+One line of instruction: listen, then repeat imitating rhythm and intonation,
+2–3 times per sentence. If audio generation failed (Step 3.5), omit this
+section entirely.
+
+### 8. 🗣️ Para levar para a aula
 1–2 concrete, specific suggestions of what to practice with the private
 tutor (e.g., "Ask your tutor to grill you with Did you…? questions about
 your last sprint, and answer only with short answers"). This is where
 production practice lives — with the tutor, not in this lesson.
 
-### 8. ✅ Gabarito
+### 9. ✅ Gabarito
 All answers: warm-up (3), spaced review (up to 2), recognition drill (4) —
 each with a one-line explanation, not just the answer.
 
-### 9. 🇧🇷 Resumo em português
+### 10. 🇧🇷 Resumo em português
 Two short paragraphs: the rule + when to use it, and the traps to avoid
 (especially the PT-interference ones from section 4).
 
