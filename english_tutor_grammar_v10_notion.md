@@ -146,6 +146,15 @@ notion-create-pages, passing the full lesson as blocks:
 | Bullet list items | `bulleted_list_item` |
 | Code / Python snippets | `code` |
 | Section separators | `divider` |
+| Shadowing audio (section 7) | `audio` block — see below |
+
+**Shadowing audio in Notion (section 7):** the repo is **public**, so embed a
+native, tappable player for each mp3 instead of a link. Use a Notion `audio`
+block whose `src` is the **raw** URL (not the `/blob/` page URL):
+`<audio src="https://raw.githubusercontent.com/LeviBertolino/English/main/audio/YYYY-MM-DD-unit-NNN/phrase-NN.mp3">phrase-NN</audio>`
+Put the sentence as a paragraph, then the `<audio>` block right after it (audio
+is a top-level block — it cannot sit inside a numbered/bulleted list item).
+Include the slow player for phrase 1.
 
 Title: `📚 Unit NNN — [title]` or `📚 Review Week NNN — Units X–Y`.
 Include ALL sections through the Resumo em português. Do not truncate.
@@ -208,13 +217,18 @@ Answers go in the Gabarito, not here.
 
 ### 7. 🔊 Shadowing (ouça e repita)
 Pick the **5 best sentences of the lesson** for speaking practice (favor the
-mini-context lines and the most work-relevant examples). List them numbered,
-each followed by a link to its mp3 in the repo:
-`https://github.com/LeviBertolino/English/blob/main/audio/YYYY-MM-DD-unit-NNN/phrase-NN.mp3`
-(GitHub renders an audio player). Include the slow version of phrase 1.
-One line of instruction: listen, then repeat imitating rhythm and intonation,
-2–3 times per sentence. If audio generation failed (Step 3.5), omit this
-section entirely.
+mini-context lines and the most work-relevant examples). Include the slow
+version of phrase 1. One line of instruction: listen, then repeat imitating
+rhythm and intonation, 2–3 times per sentence. If audio generation failed
+(Step 3.5), omit this section entirely.
+
+The two surfaces render audio differently — use the right one for each:
+- **Repo `.md` file:** list the sentences numbered, each with a `/blob/` link
+  (`https://github.com/LeviBertolino/English/blob/main/audio/YYYY-MM-DD-unit-NNN/phrase-NN.mp3`);
+  GitHub renders a player inline when viewing the file.
+- **Notion page:** the repo is **public**, so embed a native tappable player —
+  a `<audio src="https://raw.githubusercontent.com/.../phrase-NN.mp3">` block
+  after each sentence paragraph (see Step 5). Raw URL, not `/blob/`.
 
 ### 8. 🗣️ Para levar para a aula
 1–2 concrete, specific suggestions of what to practice with the private
