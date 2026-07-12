@@ -56,7 +56,7 @@ The routine is headless — lessons are generated, committed, and published to N
 
 ## Profile
 
-Designed for **Levi**, a Brazilian Portuguese speaker working as a technology leader (software engineering, AI, Staff+ tracks). Examples and interference tips are calibrated to that context.
+Designed for **Levi**, a Brazilian Portuguese speaker working as an executive leader in AI, technology strategy, and innovation — structured thinking, future visions, direct interaction with the C-Level. Examples and interference tips are calibrated to that context (strategy discussions, board presentations, AI investment decisions), not operational engineering routine.
 
 - **Level**: A2–B1 grammar explanations, C1+ vocabulary in tech/work examples
 - **Duration**: ~10 minutes per daily lesson, up to 15 for Review Week
